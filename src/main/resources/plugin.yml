@@ -1,0 +1,8 @@
+name: TWGiftTopup
+version: ${project.version}
+main: me.mcch.twgifttopup
+description: a simple plugin to topup with wallet
+commands:
+  twgifttopup:
+    aliases: [tgt,twtopup]
+    description: main command
