@@ -41,7 +41,7 @@ public final class TwGiftTopup extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can be executed in-game.");
+            sender.sendMessage("This command can only be used in-game.");
             return false;
         }
 

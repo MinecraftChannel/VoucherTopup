@@ -1,4 +1,6 @@
-#Varable %message%,%player%,%version%,%amount_double%,%amount%
+
+# Varable %message%, %player%, %version%, %amount_double%, %amount%
+
 general:
   phone_number: '#EnterPhoneNumberHere#'
   console_command:
