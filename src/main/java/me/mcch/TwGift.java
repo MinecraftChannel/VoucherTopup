@@ -36,8 +36,8 @@ public class TwGift {
 
     public JsonObject redeemVoucher(String voucherId) throws IOException {
         //EXHash AdVgpElIUm9lb1qYjn
-        //Gift Url: https://gift.truemoney.comcampaign/?v=xxxxxxxxxxxxxxxxxx <- numbers,uppercase,lowercase
-        HttpPost post = new HttpPost(REDEEM_URL.replaceAll("%hash%",voucherId));
+        //Gift Url: https://gift.truemoney.com/campaign/?v=xxxxxxxxxxxxxxxxxx <- numbers,uppercase,lowercase
+        HttpPost post = new HttpPost(REDEEM_URL.replaceAll("%hash%", voucherId));
         post.addHeader("Content-Type", "application/json");
 
         JsonObject json = new JsonObject();
@@ -54,14 +54,15 @@ public class TwGift {
         }
     }
 
-    public JsonObject redeemVoucherFormUrl(String vocher_url) throws IOException {
-        return redeemVoucher(urlToHash(vocher_url));
+    // TODO : Hostname must be "gift.truemoney.com"
+    public JsonObject redeemVoucherFormUrl(String voucher_url) throws IOException {
+        return redeemVoucher(urlToHash(voucher_url));
     }
 
     public JsonObject redeem(String voucher) throws IOException {
         if (voucher.contains("v=")) {
             return redeemVoucherFormUrl(voucher);
-        }else {
+        } else {
             return redeemVoucher(voucher);
         }
     }

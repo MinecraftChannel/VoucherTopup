@@ -1,9 +1,14 @@
-#Varable %message%,%player%,%version%,%amount_double%,%amount%
+
+# Varable %message%, %player%, %version%, %amount_double%, %amount%
+
 general:
   phone_number: '#EnterPhoneNumberHere#'
   console_command:
     - 'say %player% topup with TwGiftTopup %amount% (%amount_double%)'
     - 'eco add %player% %amount%'
+  aliases:
+    - 'truewallet'
+    - 'tw'
 message:
   chat:
     success: '&8[&bTWGiftTopup&8] &aOK -> %amount%THB (%amount_double%THB)'
