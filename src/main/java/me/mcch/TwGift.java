@@ -13,12 +13,12 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
-public class TwGift {
+public class twgift {
     //Rework form Maythiwat (Demza) source
     public String VERIFY_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/verify";
     public String REDEEM_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/redeem";
     final public String mobileNumber;
-    public TwGift(String mobileNumber) {
+    public twgift(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
     public JsonPrimitive getVoucherStatus(String vocherId){

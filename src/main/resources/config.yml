@@ -1,0 +1,30 @@
+#Varable %message%,%player%,%version%,%amount_double%,%amount%
+general:
+  phone_number: '0882433029'
+  console_command:
+    - 'say %player% topup with TWGiftTopup %amount% (%amount_double%)'
+    - 'eco add %player% %amount%'
+message:
+  chat:
+    success: '&8[&bTWGiftTopup&8] &aOK -> %amount%THB (%amount_double%THB)'
+    fail: '&8[&bTWGiftTopup&8] &cError -> %message%'
+    error: '&8[&bTWGiftTopup&8] &cTopup error please contact admin!'
+    check: '&8[&bTWGiftTopup&8] &eChecking onemoment...'
+    help:
+      - '&8[&bTWGiftTopup&8] &fTWGiftTopup v%version% by MCCH team.'
+      - '§8[§bTWGiftTopup§8] §fUsage: /tgt <url/voucher_hash>'
+  action_bar:
+    success: 'Topup success! amount: %amount%THB (%amount_double%THB)'
+    fail: '&cTopup failed: %message%'
+    error: '&cError! please contact admin!'
+    check: '&aPlease wait...'
+  title:
+    success: 'Thanks for donate!'
+    fail: '&cFAILED'
+    error: '&cERROR'
+    check: '&eChecking'
+  sub_title:
+    success: '&a%amount%THB (%amount_double%THB)'
+    fail: '&c%message%'
+    error: '&cPlease contact admin!'
+    check: '&bPlease wait...'
