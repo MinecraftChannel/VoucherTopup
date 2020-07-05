@@ -1,6 +1,6 @@
 #Varable %message%,%player%,%version%,%amount_double%,%amount%
 general:
-  phone_number: '0882433029'
+  phone_number: '#EnterPhoneNumberHere#'
   console_command:
     - 'say %player% topup with TWGiftTopup %amount% (%amount_double%)'
     - 'eco add %player% %amount%'

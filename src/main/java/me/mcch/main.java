@@ -23,7 +23,14 @@ public final class main extends JavaPlugin {
         plugin = this;
         config = this.getConfig();
         this.saveDefaultConfig();
-        twGift = new twgift(config.getString("general.phone_number"));
+        try{
+            Integer.parseInt(config.getString("general.phone_number"));
+            twGift = new twgift(config.getString("general.phone_number"));
+        }catch (Exception ex){
+            Bukkit.getLogger().severe("Phone number is invalid please check in config!");
+            Bukkit.getLogger().severe("Disabling " + plugin.getDescription().getName());
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
         plugin_version = plugin.getDescription().getVersion();
     }
     @Override
