@@ -9,57 +9,61 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class util {
+public class Utils {
     public static String getServerNMSVersion() {
-        String a = main.plugin.getServer().getClass().getPackage().getName();
+        String a = TwGiftTopup.getInstance().getServer().getClass().getPackage().getName();
         String version = a.substring(a.lastIndexOf('.') + 1);
         return version;
     }
-    public static gameversion getServerMCVersion() {
+    public static GameVersion getServerMCVersion() {
         String version = getServerNMSVersion();
-        gameversion gameVersion = gameversion.UNKNOWN;
+        GameVersion gameVersion = GameVersion.UNKNOWN;
         if (version.equalsIgnoreCase("1_8_R1") || version.equalsIgnoreCase("1_8_R2") || version.equalsIgnoreCase("1_8_R3")) {
-            gameVersion = gameversion.MC_1_8;
+            gameVersion = GameVersion.MC_1_8;
         }
         if (version.equalsIgnoreCase("1_9_R1") || version.equalsIgnoreCase("1_9_R2")) {
-            gameVersion = gameversion.MC_1_9;
+            gameVersion = GameVersion.MC_1_9;
         }
         if (version.equalsIgnoreCase("1_10_R1")) {
-            gameVersion = gameversion.MC_1_10;
+            gameVersion = GameVersion.MC_1_10;
         }
         if (version.equalsIgnoreCase("1_11_R1")) {
-            gameVersion = gameversion.MC_1_11;
+            gameVersion = GameVersion.MC_1_11;
         }
         if (version.equalsIgnoreCase("1_12_R1")) {
-            gameVersion = gameversion.MC_1_12;
+            gameVersion = GameVersion.MC_1_12;
         }
         if (version.equalsIgnoreCase("1_13_R1") || version.equalsIgnoreCase("1_13_R2")) {
-            gameVersion = gameversion.MC_1_13;
+            gameVersion = GameVersion.MC_1_13;
         }
         if (version.equalsIgnoreCase("1_14_R1")) {
-            gameVersion = gameversion.MC_1_14;
+            gameVersion = GameVersion.MC_1_14;
         }
         if (version.equalsIgnoreCase("1_15_R1")) {
-            gameVersion = gameversion.MC_1_15;
+            gameVersion = GameVersion.MC_1_15;
         }
         return gameVersion;
     }
+
     public static void sendTitle(Player player, String title,String subtitle) {
         if(getServerMCVersion().getVersionID() > 2) {
             player.sendTitle(title, subtitle,2,50,2);
         }else {
-            player.sendTitle(title,subtitle);
+            player.sendTitle(title, subtitle);
         }
     }
+
     public static void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
+
         String nmsVersion = Bukkit.getServer().getClass().getPackage().getName();
         nmsVersion = nmsVersion.substring(nmsVersion.lastIndexOf(".") + 1);
+
         //new version (1.10 or newest)
         if (getServerMCVersion().getVersionID() > 2) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
             return;
-        }else {
+        } else {
             //1.10 or lower
             try {
                 Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".entity.CraftPlayer");
@@ -84,19 +88,20 @@ public class util {
             }
         }
     }
+
     public static String replaceMessage(JsonObject redeem_result, String message,Player p) {
         String message_result = message
                 .replaceAll("&","§")
-                .replaceAll("%version%",main.plugin_version)
-                .replaceAll("%player%",p.getName());
+                .replaceAll("%version%", TwGiftTopup.plugin_version)
+                .replaceAll("%player%", p.getName());
         if (redeem_result != null) {
             JsonObject status = redeem_result.getAsJsonObject().get("status").getAsJsonObject();
             JsonObject voucher = redeem_result.getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();
             message_result = message_result
-                    .replaceAll("%amount%",String.valueOf((int)voucher.get("redeemed_amount_baht").getAsDouble()))
-                    .replaceAll("%amount_double%",voucher.get("redeemed_amount_baht").getAsString())
-                    .replaceAll("%message%",status.get("message").getAsString())
-                    .replaceAll("%code%",status.get("code").getAsString());
+                    .replaceAll("%amount%", String.valueOf((int)voucher.get("redeemed_amount_baht").getAsDouble()))
+                    .replaceAll("%amount_double%", voucher.get("redeemed_amount_baht").getAsString())
+                    .replaceAll("%message%", status.get("message").getAsString())
+                    .replaceAll("%code%", status.get("code").getAsString());
         }
         return message_result;
     }

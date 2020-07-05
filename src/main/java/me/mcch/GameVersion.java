@@ -1,6 +1,6 @@
 package me.mcch;
 
-public enum gameversion {
+public enum GameVersion {
     UNKNOWN(100),
     MC_1_8(1),
     MC_1_9(2),
@@ -10,10 +10,13 @@ public enum gameversion {
     MC_1_13(6),
     MC_1_14(7),
     MC_1_15(8);
+
     private int id;
-    gameversion(int id){
+
+    GameVersion(int id){
         this.id = id;
     }
+
     public int getVersionID(){
         return id;
     }

@@ -2,7 +2,7 @@
 general:
   phone_number: '#EnterPhoneNumberHere#'
   console_command:
-    - 'say %player% topup with TWGiftTopup %amount% (%amount_double%)'
+    - 'say %player% topup with TwGiftTopup %amount% (%amount_double%)'
     - 'eco add %player% %amount%'
 message:
   chat:
