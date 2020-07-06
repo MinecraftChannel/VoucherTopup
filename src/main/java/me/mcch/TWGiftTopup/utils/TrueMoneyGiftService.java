@@ -10,26 +10,27 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TrueMoneyGift {
+public class TrueMoneyGiftService {
 
+    final public String mobileNumber;
+    final JsonObject return_error = (JsonObject) new JsonParser().parse("{\"message\":\"Java error.\",\"code\":\"JAVA_ERROR\"}");
     //Rework form Maythiwat (Demza) source
     public String VERIFY_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/verify";
     public String REDEEM_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/redeem";
-    final public String mobileNumber;
-    final JsonObject return_error = (JsonObject) new JsonParser().parse("{\"message\":\"Java error.\",\"code\":\"JAVA_ERROR\"}");
 
-    public TrueMoneyGift(String mobileNumber) {
+    public TrueMoneyGiftService(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
-    public JsonPrimitive getVoucherStatus(String vocherId){
-        HttpGet get = new HttpGet(VERIFY_URL.replaceAll("%hash%",vocherId));
+    public JsonPrimitive getVoucherStatus(String vocherId) {
+        HttpGet get = new HttpGet(VERIFY_URL.replaceAll("%hash%", vocherId));
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(get)) {
+             CloseableHttpResponse response = httpClient.execute(get)) {
             System.out.println(EntityUtils.toString(response.getEntity()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,7 +52,7 @@ public class TrueMoneyGift {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(post)) {
             return (JsonObject) new JsonParser().parse(EntityUtils.toString(response.getEntity()));
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return return_error;
         }
@@ -63,7 +64,7 @@ public class TrueMoneyGift {
             if (!(url.getHost().equalsIgnoreCase("gift.truemoney.com") && url.getPath().equalsIgnoreCase("/campaign/"))) {
                 return return_error;
             }
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             return return_error;
         }
         return redeemVoucher(urlToHash(voucher_url));

@@ -5,14 +5,20 @@
 
 ## Get TWGiftTopup
 ### Download
-+ [**Jenkins**]([http://www.google.com/](http://www.google.com/))
++ [**Github Releases**](https://github.com/MinecraftChannel/TWGiftTopup/releases)
++ [**Jenkins**](#)
+
 #### Requirements
 * Java (JDK) 8 or above
 * Maven
+
 #### Compile
 ```sh
-git coming soon!
+git clone https://github.com/MinecraftChannel/TWGiftTopup
+cd TWGiftTopup
+mvn clean install
 ```
+
 ## Demo Servers
 * [Minecraft Deluxe](http://mc-deluxe.net) (1.15.2)
 
@@ -22,42 +28,45 @@ git coming soon!
   
  ```java
 import com.google.gson.JsonObject;  
-import me.mcch.TWGiftTopup.API.Events.TWPlayerTopupEvent;  
-import me.mcch.TWGiftTopup.API.Events.TWTopupSuccessEvent;  
+import me.mcch.twgifttopup.api.events.TWPlayerTopupEvent;  
+import me.mcch.twgifttopup.api.events.TWTopupSuccessEvent;  
 import org.bukkit.entity.Player;  
 import org.bukkit.event.EventHandler;  
 import org.bukkit.event.Listener;  
   
-public class MyPlugin implements Listener {  
-  @EventHandler  
-  public void onTopup(TWPlayerTopupEvent e){  
+public class MyPlugin implements Listener {
+
+    @EventHandler  
+    public void onTopup(TWPlayerTopupEvent e) {  
         Player player = e.getPlayer();  
-         String input = e.getInput();  
-         e.setCancelled(true);  
-  }  
-  
-  @EventHandler  
-  public void onTopupError(TWTopupSuccessEvent e){  
+        String input = e.getInput();  
+        e.setCancelled(true);  
+    }
+
+    @EventHandler  
+    public void onTopupError(TWTopupSuccessEvent e) { 
         Player player = e.getPlayer();  
-       JsonObject result = e.getResult();  
-  }  
-  @EventHandler  
-  public void onTopupFailed(TWTopupSuccessEvent e){  
+        JsonObject result = e.getResult();  
+    }
+
+    @EventHandler  
+    public void onTopupFailed(TWTopupSuccessEvent e) {  
         Player player = e.getPlayer();  
-       JsonObject result = e.getResult();  
-  }  
-  @EventHandler  
-  public void onTopupSuccess(TWTopupSuccessEvent e){  
-       Player player = e.getPlayer();  
-       JsonObject result = e.getResult();  
-       System.out.println(result);  
-       JsonObject status = e.getResult().getAsJsonObject().get("status").getAsJsonObject();  
-       System.out.println(status);  
-       JsonObject voucher = e.getResult().getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();  
-       System.out.println(voucher);  
-       double amount = voucher.get("redeemed_amount_baht").getAsDouble();  
-       System.out.println("Redeem amount: " + amount + " by " + player.getName());  
-  }  
+        JsonObject result = e.getResult();  
+    }
+
+    @EventHandler  
+    public void onTopupSuccess(TWTopupSuccessEvent e) {
+        Player player = e.getPlayer();  
+        JsonObject result = e.getResult();  
+        System.out.println(result);  
+        JsonObject status = e.getResult().getAsJsonObject().get("status").getAsJsonObject();  
+        System.out.println(status);  
+        JsonObject voucher = e.getResult().getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();  
+        System.out.println(voucher);  
+        double amount = voucher.get("redeemed_amount_baht").getAsDouble();  
+        System.out.println("Redeem amount: " + amount + " by " + player.getName());  
+    }
 }
  ```
 </details>

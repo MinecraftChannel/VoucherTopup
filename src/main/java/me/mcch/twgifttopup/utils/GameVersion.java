@@ -1,4 +1,4 @@
-package me.mcch.TWGiftTopup;
+package me.mcch.twgifttopup.utils;
 
 public enum GameVersion {
     UNKNOWN(100),
@@ -13,11 +13,11 @@ public enum GameVersion {
 
     private int id;
 
-    GameVersion(int id){
+    GameVersion(int id) {
         this.id = id;
     }
 
-    public int getVersionID(){
+    public int getVersionID() {
         return id;
     }
 }

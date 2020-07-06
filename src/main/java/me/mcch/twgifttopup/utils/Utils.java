@@ -1,7 +1,7 @@
-package me.mcch.TWGiftTopup;
+package me.mcch.twgifttopup.utils;
 
 import com.google.gson.JsonObject;
-import me.mcch.TWGiftTopup.utils.GameVersion;
+import me.mcch.twgifttopup.TwGiftTopup;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -16,6 +16,7 @@ public class Utils {
         String version = a.substring(a.lastIndexOf('.') + 1);
         return version;
     }
+
     public static GameVersion getServerMCVersion() {
         String version = getServerNMSVersion();
         GameVersion gameVersion = GameVersion.UNKNOWN;
@@ -46,10 +47,10 @@ public class Utils {
         return gameVersion;
     }
 
-    public static void sendTitle(Player player, String title,String subtitle) {
-        if(getServerMCVersion().getVersionID() > 2) {
-            player.sendTitle(title, subtitle,2,50,2);
-        }else {
+    public static void sendTitle(Player player, String title, String subtitle) {
+        if (getServerMCVersion().getVersionID() > 2) {
+            player.sendTitle(title, subtitle, 2, 50, 2);
+        } else {
             player.sendTitle(title, subtitle);
         }
     }
@@ -90,16 +91,16 @@ public class Utils {
         }
     }
 
-    public static String replaceMessage(JsonObject redeem_result, String message,Player p) {
+    public static String replaceMessage(JsonObject redeem_result, String message, Player p) {
         String message_result = message
-                .replaceAll("&","§")
-                .replaceAll("%version%", TwGiftTopup.plugin_version)
+                .replaceAll("&", "§")
+                .replaceAll("%version%", TwGiftTopup.getVersion())
                 .replaceAll("%player%", p.getName());
         if (redeem_result != null) {
             JsonObject status = redeem_result.getAsJsonObject().get("status").getAsJsonObject();
             JsonObject voucher = redeem_result.getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();
             message_result = message_result
-                    .replaceAll("%amount%", String.valueOf((int)voucher.get("redeemed_amount_baht").getAsDouble()))
+                    .replaceAll("%amount%", String.valueOf((int) voucher.get("redeemed_amount_baht").getAsDouble()))
                     .replaceAll("%amount_double%", voucher.get("redeemed_amount_baht").getAsString())
                     .replaceAll("%message%", status.get("message").getAsString())
                     .replaceAll("%code%", status.get("code").getAsString());

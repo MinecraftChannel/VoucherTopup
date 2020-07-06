@@ -1,4 +1,4 @@
-package me.mcch.TWGiftTopup.API.Events;
+package me.mcch.twgifttopup.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -8,9 +8,15 @@ public class TWTopupErrorEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private Player player;
     private Exception exception;
+
     public TWTopupErrorEvent(Player p, Exception ex) {
 
     }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -21,9 +27,6 @@ public class TWTopupErrorEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

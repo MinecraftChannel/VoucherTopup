@@ -1,7 +1,9 @@
 name: TwGiftTopup
 version: ${project.version}
-main: me.mcch.TWGiftTopup.TwGiftTopup
+main: me.mcch.twgifttopup.TwGiftTopup
 description: a simple plugin to topup with wallet
+website: https://github.com/MinecraftChannel/TWGiftTopup
+authors: [_StarChaser, Maythiwat]
 commands:
   twgifttopup:
     aliases: [tgt, twtopup]
