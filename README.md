@@ -1,6 +1,6 @@
 ﻿<div align="center">
-  <h1>TWGiftTopup</h1>
-  TWGiftTopup (Truewallet gift topup) is a spigot plugin to allow player topup/refill/donate with truemoney wallet gift voucher system and very configurable, 100% free and open source!
+  <h1>VoucherTopup</h1>
+  VoucherTopup is a spigot plugin to allow player topup/refill/donate with truemoney wallet gift voucher system and very configurable, 100% free and open source!
 </div>
 
 ## Get TWGiftTopup
