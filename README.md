@@ -3,7 +3,7 @@
   VoucherTopup is a spigot plugin to allow player topup/refill/donate with truemoney wallet gift voucher system and very configurable, 100% free and open source!
 </div>
 
-## Get TWGiftTopup
+## Get VoucherTopup
 ### Download
 + [**Github Releases**](https://github.com/MinecraftChannel/VoucherTopup/releases)
 + [**Jenkins**](#)
@@ -37,26 +37,26 @@ import org.bukkit.event.Listener;
 public class MyPlugin implements Listener {
 
     @EventHandler  
-    public void onTopup(TWPlayerTopupEvent e) {  
+    public void onTopup(PlayerTopupEvent e) {  
         Player player = e.getPlayer();  
         String input = e.getInput();  
         e.setCancelled(true);  
     }
 
     @EventHandler  
-    public void onTopupError(TWTopupErrorEvent e) { 
+    public void onTopupError(TopupErrorEvent e) { 
         Player player = e.getPlayer();  
         JsonObject result = e.getResult();  
     }
 
     @EventHandler  
-    public void onTopupFailed(TWTopupFailedEvent e) {  
+    public void onTopupFailed(TopupFailedEvent e) {  
         Player player = e.getPlayer();  
         JsonObject result = e.getResult();  
     }
 
     @EventHandler  
-    public void onTopupSuccess(TWTopupSuccessEvent e) {
+    public void onTopupSuccess(TopupSuccessEvent e) {
         Player player = e.getPlayer();  
         JsonObject result = e.getResult();  
         System.out.println(result);  
