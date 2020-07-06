@@ -1,4 +1,4 @@
-package me.mcch;
+package me.mcch.TWGiftTopup;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -20,6 +20,7 @@ public class TwGift {
     public String VERIFY_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/verify";
     public String REDEEM_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/redeem";
     final public String mobileNumber;
+    final JsonObject return_error = (JsonObject) new JsonParser().parse("{\"message\":\"Java error.\",\"code\":\"JAVA_ERROR\"}");
 
     public TwGift(String mobileNumber) {
         this.mobileNumber = mobileNumber;
@@ -50,9 +51,9 @@ public class TwGift {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(post)) {
             return (JsonObject) new JsonParser().parse(EntityUtils.toString(response.getEntity()));
-        }catch (Exception e) {
-            e.printStackTrace();
-            return (JsonObject) new JsonParser().parse("{\"message\":\""+e.getMessage()+".\",\"code\":\"JAVA_ERROR\"}");
+        }catch (Exception ex) {
+            ex.printStackTrace();
+            return return_error;
         }
     }
 
@@ -60,10 +61,10 @@ public class TwGift {
         try {
             URL url = new URL(voucher_url);
             if (!(url.getHost().equalsIgnoreCase("gift.truemoney.com") && url.getPath().equalsIgnoreCase("/campaign/"))) {
-                return null;
+                return return_error;
             }
         }catch (MalformedURLException e) {
-            return null;
+            return return_error;
         }
         return redeemVoucher(urlToHash(voucher_url));
     }

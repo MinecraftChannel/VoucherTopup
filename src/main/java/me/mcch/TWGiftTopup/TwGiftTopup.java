@@ -1,15 +1,17 @@
-package me.mcch;
+package me.mcch.TWGiftTopup;
 
 import com.google.gson.JsonObject;
+import me.mcch.TWGiftTopup.API.Events.TWPlayerTopupEvent;
+import me.mcch.TWGiftTopup.API.Events.TWTopupErrorEvent;
+import me.mcch.TWGiftTopup.API.Events.TWTopupFailedEvent;
+import me.mcch.TWGiftTopup.API.Events.TWTopupSuccessEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.io.IOException;
 
 public final class TwGiftTopup extends JavaPlugin {
 
@@ -39,12 +41,17 @@ public final class TwGiftTopup extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be used in-game.");
-            return false;
+            this.reloadConfig();
+            config = this.getConfig();
+            sender.sendMessage("TWGiftTopup reloaded!");
+            return true;
         }
 
         Player p = (Player) sender;
         if (args.length > 0) {
+            TWPlayerTopupEvent event = new TWPlayerTopupEvent(p, args[0]);
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled()) return true;
             p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.check"), p));
             Utils.sendActionbar(p, Utils.replaceMessage(null, config.getString("message.action_bar.check"), p));
             Utils.sendTitle(p, Utils.replaceMessage(null, config.getString("message.title.check"), p), Utils.replaceMessage(null, config.getString("message.sub_title.check"), p));
@@ -57,26 +64,37 @@ public final class TwGiftTopup extends JavaPlugin {
                             for (String s : config.getStringList("general.console_command")) {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Utils.replaceMessage(redeem_result, s, p));
                             }
+                            Bukkit.getPluginManager().callEvent(new TWTopupSuccessEvent(p, redeem_result));
                         });
                         p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.success"), p));
                         Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.success"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.success"), p));
                         Utils.sendActionbar(p, Utils.replaceMessage(redeem_result, config.getString("message.action_bar.success"), p));
+                        p.playSound(p.getLocation(), config.getString("sound.on_success.sound"), SoundCategory.PLAYERS, (float)config.getDouble("sound.on_success.volume"), (float)config.getDouble("sound.on_success.pitch"));
                     } else {
+                        Bukkit.getScheduler().runTask(instance, () -> {
+                            Bukkit.getPluginManager().callEvent(new TWTopupFailedEvent(p, redeem_result));
+                        });
                         p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.fail"), p));
                         Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.fail"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.fail"), p));
                         Utils.sendActionbar(p, Utils.replaceMessage(redeem_result, config.getString("message.action_bar.fail"), p));
+                        p.playSound(p.getLocation(), config.getString("sound.on_fail.sound"), SoundCategory.PLAYERS, (float)config.getDouble("sound.on_fail.volume"), (float)config.getDouble("sound.on_fail.pitch"));
                     }
                 } catch (Exception ex) {
+                    Bukkit.getScheduler().runTask(instance, () -> {
+                        Bukkit.getPluginManager().callEvent(new TWTopupErrorEvent(p, ex));
+                    });
                     ex.printStackTrace();
                     p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.error"), p));
                     Utils.sendTitle(p, Utils.replaceMessage(null, config.getString("message.title.error"), p), Utils.replaceMessage(null, config.getString("message.sub_title.error"), p));
                     Utils.sendActionbar(p, Utils.replaceMessage(null, config.getString("message.action_bar.error"), p));
+                    p.playSound(p.getLocation(), config.getString("sound.on_error.sound"), SoundCategory.PLAYERS, (float)config.getDouble("sound.on_error.volume"), (float)config.getDouble("sound.on_error.pitch"));
                 }
             });
         } else {
             for (String s : config.getStringList("message.chat.help")) {
                 p.sendMessage(s.replaceAll("&", "§").replaceAll("%version%", plugin_version).replaceAll("%player%", p.getName()));
             }
+            p.playSound(p.getLocation(), config.getString("sound.on_type_command.sound"), SoundCategory.PLAYERS, (float)config.getDouble("sound.on_type_command.volume"), (float)config.getDouble("sound.on_type_command.pitch"));
         }
 
         return super.onCommand(sender, command, label, args);

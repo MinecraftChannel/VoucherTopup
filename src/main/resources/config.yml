@@ -33,3 +33,24 @@ message:
     fail: '&c%message%'
     error: '&cPlease contact admin!'
     check: '&bPlease wait...'
+sound:
+  on_type_command:
+    sound: 'entity.item.pickup'
+    volume: 1.0
+    pitch: 1.0
+  on_check:
+    sound: 'block.piston.extend'
+    volume: 1.0
+    pitch: 1.0
+  on_error:
+    sound: 'block.anvil.break'
+    volume: 1.0
+    pitch: 1.0
+  on_fail:
+    sound: 'block.anvil.break'
+    volume: 1.0
+    pitch: 1.0
+  on_success:
+    sound: 'entity.experience_orb.pickup'
+    volume: 1.0
+    pitch: 1.0

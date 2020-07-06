@@ -1,4 +1,4 @@
-package me.mcch;
+package me.mcch.TWGiftTopup;
 
 import com.google.gson.JsonObject;
 import net.md_5.bungee.api.ChatMessageType;
@@ -15,7 +15,6 @@ public class Utils {
         String version = a.substring(a.lastIndexOf('.') + 1);
         return version;
     }
-
     public static GameVersion getServerMCVersion() {
         String version = getServerNMSVersion();
         GameVersion gameVersion = GameVersion.UNKNOWN;
@@ -46,9 +45,9 @@ public class Utils {
         return gameVersion;
     }
 
-    public static void sendTitle(Player player, String title, String subtitle) {
+    public static void sendTitle(Player player, String title,String subtitle) {
         if(getServerMCVersion().getVersionID() > 2) {
-            player.sendTitle(title, subtitle, 2, 50, 2);
+            player.sendTitle(title, subtitle,2,50,2);
         }else {
             player.sendTitle(title, subtitle);
         }
@@ -90,9 +89,9 @@ public class Utils {
         }
     }
 
-    public static String replaceMessage(JsonObject redeem_result, String message, Player p) {
+    public static String replaceMessage(JsonObject redeem_result, String message,Player p) {
         String message_result = message
-                .replaceAll("&", "§")
+                .replaceAll("&","§")
                 .replaceAll("%version%", TwGiftTopup.plugin_version)
                 .replaceAll("%player%", p.getName());
         if (redeem_result != null) {

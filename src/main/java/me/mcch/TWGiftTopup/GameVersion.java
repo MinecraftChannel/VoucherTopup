@@ -1,4 +1,4 @@
-package me.mcch;
+package me.mcch.TWGiftTopup;
 
 public enum GameVersion {
     UNKNOWN(100),
