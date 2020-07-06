@@ -1,4 +1,4 @@
-package me.mcch.TWGiftTopup;
+package me.mcch.twgifttopup.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TwGift {
+public class TrueMoneyGift {
 
     //Rework form Maythiwat (Demza) source
     public String VERIFY_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/verify";
@@ -22,7 +22,7 @@ public class TwGift {
     final public String mobileNumber;
     final JsonObject return_error = (JsonObject) new JsonParser().parse("{\"message\":\"Java error.\",\"code\":\"JAVA_ERROR\"}");
 
-    public TwGift(String mobileNumber) {
+    public TrueMoneyGift(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
