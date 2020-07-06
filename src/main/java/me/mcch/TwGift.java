@@ -11,6 +11,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class TwGift {
 
@@ -48,14 +50,21 @@ public class TwGift {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(post)) {
             return (JsonObject) new JsonParser().parse(EntityUtils.toString(response.getEntity()));
-        }catch (Exception ex) {
-            ex.printStackTrace();
-            return (JsonObject) new JsonParser().parse("{\"message\":\""+ex.getMessage()+".\",\"code\":\"JAVA_ERROR\"}");
+        }catch (Exception e) {
+            e.printStackTrace();
+            return (JsonObject) new JsonParser().parse("{\"message\":\""+e.getMessage()+".\",\"code\":\"JAVA_ERROR\"}");
         }
     }
 
-    // TODO : Hostname must be "gift.truemoney.com"
     public JsonObject redeemVoucherFormUrl(String voucher_url) throws IOException {
+        try {
+            URL url = new URL(voucher_url);
+            if (!(url.getHost().equalsIgnoreCase("gift.truemoney.com") && url.getPath().equalsIgnoreCase("/campaign/"))) {
+                return null;
+            }
+        }catch (MalformedURLException e) {
+            return null;
+        }
         return redeemVoucher(urlToHash(voucher_url));
     }
 

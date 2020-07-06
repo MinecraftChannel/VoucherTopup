@@ -10,8 +10,8 @@ public class Events implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         for (String s : TwGiftTopup.config.getStringList("general.aliases")) {
-            if (e.getMessage().replaceFirst("/","").toLowerCase().startsWith(s)){
-                Bukkit.dispatchCommand(e.getPlayer(),"twgifttopup" + e.getMessage().replaceFirst(e.getMessage().split(" ")[0],""));
+            if (e.getMessage().replaceFirst("/", "").toLowerCase().startsWith(s)){
+                Bukkit.dispatchCommand(e.getPlayer(), "twgifttopup" + e.getMessage().replaceFirst(e.getMessage().split(" ")[0], ""));
                 e.setCancelled(true);
                 return;
             }
