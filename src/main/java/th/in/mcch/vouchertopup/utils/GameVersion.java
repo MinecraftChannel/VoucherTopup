@@ -1,4 +1,4 @@
-package me.mcch.twgifttopup.utils;
+package th.in.mcch.vouchertopup.utils;
 
 public enum GameVersion {
     UNKNOWN(100),

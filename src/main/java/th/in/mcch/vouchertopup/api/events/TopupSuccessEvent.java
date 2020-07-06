@@ -1,16 +1,18 @@
-package me.mcch.twgifttopup.api.events;
+package th.in.mcch.vouchertopup.api.events;
 
+import com.google.gson.JsonObject;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class TWTopupErrorEvent extends Event {
+public class TopupSuccessEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private Player player;
-    private Exception exception;
+    private JsonObject result;
 
-    public TWTopupErrorEvent(Player p, Exception ex) {
-
+    public TopupSuccessEvent(Player p, JsonObject result) {
+        this.player = p;
+        this.result = result;
     }
 
     public static HandlerList getHandlerList() {
@@ -21,8 +23,8 @@ public class TWTopupErrorEvent extends Event {
         return player;
     }
 
-    public Exception getException() {
-        return exception;
+    public JsonObject getResult() {
+        return result;
     }
 
     @Override

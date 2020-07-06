@@ -5,19 +5,19 @@
 
 ## Get TWGiftTopup
 ### Download
-+ [**Github Releases**](https://github.com/MinecraftChannel/TWGiftTopup/releases)
++ [**Github Releases**](https://github.com/MinecraftChannel/VoucherTopup/releases)
 + [**Jenkins**](#)
+
+### Compile
+```sh
+git clone https://github.com/MinecraftChannel/VoucherTopup
+cd VoucherTopup
+mvn clean install
+```
 
 #### Requirements
 * Java (JDK) 8 or above
 * Maven
-
-#### Compile
-```sh
-git clone https://github.com/MinecraftChannel/TWGiftTopup
-cd TWGiftTopup
-mvn clean install
-```
 
 ## Demo Servers
 * [Minecraft Deluxe](http://mc-deluxe.net) (1.15.2)
@@ -28,8 +28,8 @@ mvn clean install
   
  ```java
 import com.google.gson.JsonObject;  
-import me.mcch.twgifttopup.api.events.TWPlayerTopupEvent;  
-import me.mcch.twgifttopup.api.events.TWTopupSuccessEvent;  
+import th.in.mcch.vouchertopup.api.events.PlayerTopupEvent;  
+import th.in.mcch.vouchertopup.api.events.TopupSuccessEvent;  
 import org.bukkit.entity.Player;  
 import org.bukkit.event.EventHandler;  
 import org.bukkit.event.Listener;  
@@ -72,4 +72,4 @@ public class MyPlugin implements Listener {
 </details>
 
 ## Open Source Libraries
-* [httpcomponents-client](https://github.com/apache/httpcomponents-client) by [Apache](https://github.com/apache) | [Apache License 2.0](https://github.com/brettwooldridge/HikariCP/blob/dev/LICENSE)
+* [httpcomponents-client](https://github.com/apache/httpcomponents-client) by [Apache](https://github.com/apache) | [Apache License 2.0](https://github.com/apache/httpcomponents-client/blob/master/LICENSE.txt)

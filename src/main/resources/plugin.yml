@@ -1,10 +1,10 @@
-name: TwGiftTopup
+name: VoucherTopup
 version: ${project.version}
-main: me.mcch.twgifttopup.TwGiftTopup
+main: th.in.mcch.vouchertopup.VoucherTopup
 description: a simple plugin to topup with wallet
-website: https://github.com/MinecraftChannel/twgifttopup
+website: https://github.com/MinecraftChannel/VoucherTopup
 authors: [_StarChaser, Maythiwat]
 commands:
-  twgifttopup:
-    aliases: [tgt, twtopup]
-    description: TwGiftTopup command
+  vouchertopup:
+    aliases: [voucher, topup, twtopup]
+    description: VoucherTopup command

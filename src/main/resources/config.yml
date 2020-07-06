@@ -4,20 +4,20 @@
 general:
   phone_number: '#EnterPhoneNumberHere#'
   console_command:
-    - 'say %player% topup with TwGiftTopup %amount% (%amount_double%)'
+    - 'say %player% topup with VoucherTopup %amount% (%amount_double%)'
     - 'eco add %player% %amount%'
   aliases:
     - 'truewallet'
     - 'tw'
 message:
   chat:
-    success: '&8[&bTWGiftTopup&8] &aOK -> %amount%THB (%amount_double%THB)'
-    fail: '&8[&bTWGiftTopup&8] &cError -> %message%'
-    error: '&8[&bTWGiftTopup&8] &cTopup error please contact admin!'
-    check: '&8[&bTWGiftTopup&8] &eChecking onemoment...'
+    success: '&8[&bVoucherTopup&8] &aOK -> %amount%THB (%amount_double%THB)'
+    fail: '&8[&bVoucherTopup&8] &cError -> %message%'
+    error: '&8[&bVoucherTopup&8] &cTopup error please contact admin!'
+    check: '&8[&bVoucherTopup&8] &eChecking, please wait...'
     help:
-      - '&8[&bTWGiftTopup&8] &fTWGiftTopup v%version% by MCCH team.'
-      - '§8[§bTWGiftTopup§8] §fUsage: /tgt <url/voucher_hash>'
+      - '&8[&bVoucherTopup&8] &fVoucherTopup v%version% by MCCH team.'
+      - '§8[§bVoucherTopup§8] §fUsage: /tgt <url/voucher_hash>'
   action_bar:
     success: 'Topup success! amount: %amount%THB (%amount_double%THB)'
     fail: '&cTopup failed: %message%'

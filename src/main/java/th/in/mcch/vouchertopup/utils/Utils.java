@@ -1,7 +1,7 @@
-package me.mcch.twgifttopup.utils;
+package th.in.mcch.vouchertopup.utils;
 
 import com.google.gson.JsonObject;
-import me.mcch.twgifttopup.TwGiftTopup;
+import th.in.mcch.vouchertopup.VoucherTopup;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 
 public class Utils {
     public static String getServerNMSVersion() {
-        String a = TwGiftTopup.getInstance().getServer().getClass().getPackage().getName();
+        String a = VoucherTopup.getInstance().getServer().getClass().getPackage().getName();
         String version = a.substring(a.lastIndexOf('.') + 1);
         return version;
     }
@@ -94,7 +94,7 @@ public class Utils {
     public static String replaceMessage(JsonObject redeem_result, String message, Player p) {
         String message_result = message
                 .replaceAll("&", "§")
-                .replaceAll("%version%", TwGiftTopup.getVersion())
+                .replaceAll("%version%", VoucherTopup.getVersion())
                 .replaceAll("%player%", p.getName());
         if (redeem_result != null) {
             JsonObject status = redeem_result.getAsJsonObject().get("status").getAsJsonObject();

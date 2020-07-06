@@ -1,17 +1,17 @@
-package me.mcch.twgifttopup.api.events;
+package th.in.mcch.vouchertopup.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class TWPlayerTopupEvent extends Event implements Cancellable {
+public class PlayerTopupEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled = false;
     private Player player;
     private String input;
 
-    public TWPlayerTopupEvent(Player p, String input) {
+    public PlayerTopupEvent(Player p, String input) {
         player = p;
         this.input = input;
     }

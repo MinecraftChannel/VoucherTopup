@@ -1,12 +1,12 @@
-package me.mcch.twgifttopup;
+package th.in.mcch.vouchertopup;
 
 import com.google.gson.JsonObject;
-import me.mcch.twgifttopup.api.events.TWPlayerTopupEvent;
-import me.mcch.twgifttopup.api.events.TWTopupErrorEvent;
-import me.mcch.twgifttopup.api.events.TWTopupFailedEvent;
-import me.mcch.twgifttopup.api.events.TWTopupSuccessEvent;
-import me.mcch.twgifttopup.utils.TrueMoneyGiftService;
-import me.mcch.twgifttopup.utils.Utils;
+import th.in.mcch.vouchertopup.api.events.PlayerTopupEvent;
+import th.in.mcch.vouchertopup.api.events.TopupErrorEvent;
+import th.in.mcch.vouchertopup.api.events.TopupFailedEvent;
+import th.in.mcch.vouchertopup.api.events.TopupSuccessEvent;
+import th.in.mcch.vouchertopup.utils.TrueMoneyGiftService;
+import th.in.mcch.vouchertopup.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.SoundCategory;
 import org.bukkit.command.Command;
@@ -15,14 +15,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class TwGiftTopup extends JavaPlugin {
+public final class VoucherTopup extends JavaPlugin {
 
     public static FileConfiguration config;
-    static TwGiftTopup instance;
+    static VoucherTopup instance;
     static String version;
     public TrueMoneyGiftService twGift;
 
-    public static TwGiftTopup getInstance() {
+    public static VoucherTopup getInstance() {
         return instance;
     }
 
@@ -52,13 +52,13 @@ public final class TwGiftTopup extends JavaPlugin {
         if (!(sender instanceof Player)) {
             this.reloadConfig();
             config = this.getConfig();
-            sender.sendMessage("twgifttopup reloaded!");
+            sender.sendMessage("VoucherTopup Reloaded!");
             return true;
         }
 
         Player p = (Player) sender;
         if (args.length > 0) {
-            TWPlayerTopupEvent event = new TWPlayerTopupEvent(p, args[0]);
+            PlayerTopupEvent event = new PlayerTopupEvent(p, args[0]);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) return true;
             p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.check"), p));
@@ -73,7 +73,7 @@ public final class TwGiftTopup extends JavaPlugin {
                             for (String s : config.getStringList("general.console_command")) {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Utils.replaceMessage(redeem_result, s, p));
                             }
-                            Bukkit.getPluginManager().callEvent(new TWTopupSuccessEvent(p, redeem_result));
+                            Bukkit.getPluginManager().callEvent(new TopupSuccessEvent(p, redeem_result));
                         });
                         p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.success"), p));
                         Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.success"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.success"), p));
@@ -81,7 +81,7 @@ public final class TwGiftTopup extends JavaPlugin {
                         p.playSound(p.getLocation(), config.getString("sound.on_success.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_success.volume"), (float) config.getDouble("sound.on_success.pitch"));
                     } else {
                         Bukkit.getScheduler().runTask(instance, () -> {
-                            Bukkit.getPluginManager().callEvent(new TWTopupFailedEvent(p, redeem_result));
+                            Bukkit.getPluginManager().callEvent(new TopupFailedEvent(p, redeem_result));
                         });
                         p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.fail"), p));
                         Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.fail"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.fail"), p));
@@ -90,7 +90,7 @@ public final class TwGiftTopup extends JavaPlugin {
                     }
                 } catch (Exception ex) {
                     Bukkit.getScheduler().runTask(instance, () -> {
-                        Bukkit.getPluginManager().callEvent(new TWTopupErrorEvent(p, ex));
+                        Bukkit.getPluginManager().callEvent(new TopupErrorEvent(p, ex));
                     });
                     ex.printStackTrace();
                     p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.error"), p));
