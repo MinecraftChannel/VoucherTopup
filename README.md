@@ -44,13 +44,13 @@ public class MyPlugin implements Listener {
     }
 
     @EventHandler  
-    public void onTopupError(TWTopupSuccessEvent e) { 
+    public void onTopupError(TWTopupErrorEvent e) { 
         Player player = e.getPlayer();  
         JsonObject result = e.getResult();  
     }
 
     @EventHandler  
-    public void onTopupFailed(TWTopupSuccessEvent e) {  
+    public void onTopupFailed(TWTopupFailedEvent e) {  
         Player player = e.getPlayer();  
         JsonObject result = e.getResult();  
     }
