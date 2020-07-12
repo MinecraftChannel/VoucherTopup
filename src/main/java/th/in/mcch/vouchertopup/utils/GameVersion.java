@@ -9,7 +9,8 @@ public enum GameVersion {
     MC_1_12(5),
     MC_1_13(6),
     MC_1_14(7),
-    MC_1_15(8);
+    MC_1_15(8),
+    MC_1_16(9);
 
     private int id;
 

@@ -20,35 +20,38 @@ public class Utils {
     public static GameVersion getServerMCVersion() {
         String version = getServerNMSVersion();
         GameVersion gameVersion = GameVersion.UNKNOWN;
-        if (version.equalsIgnoreCase("1_8_R1") || version.equalsIgnoreCase("1_8_R2") || version.equalsIgnoreCase("1_8_R3")) {
+        if (version.contains("1_8")) {
             gameVersion = GameVersion.MC_1_8;
         }
-        if (version.equalsIgnoreCase("1_9_R1") || version.equalsIgnoreCase("1_9_R2")) {
+        if (version.contains("1_9")) {
             gameVersion = GameVersion.MC_1_9;
         }
-        if (version.equalsIgnoreCase("1_10_R1")) {
+        if (version.contains("1_10")) {
             gameVersion = GameVersion.MC_1_10;
         }
-        if (version.equalsIgnoreCase("1_11_R1")) {
+        if (version.contains("1_11")) {
             gameVersion = GameVersion.MC_1_11;
         }
-        if (version.equalsIgnoreCase("1_12_R1")) {
+        if (version.contains("1_12")) {
             gameVersion = GameVersion.MC_1_12;
         }
-        if (version.equalsIgnoreCase("1_13_R1") || version.equalsIgnoreCase("1_13_R2")) {
+        if (version.contains("1_13")) {
             gameVersion = GameVersion.MC_1_13;
         }
-        if (version.equalsIgnoreCase("1_14_R1")) {
+        if (version.contains("1_14")) {
             gameVersion = GameVersion.MC_1_14;
         }
-        if (version.equalsIgnoreCase("1_15_R1")) {
+        if (version.contains("1_15")) {
             gameVersion = GameVersion.MC_1_15;
+        }
+        if (version.contains("1_16")) {
+            gameVersion = GameVersion.MC_1_16;
         }
         return gameVersion;
     }
 
     public static void sendTitle(Player player, String title, String subtitle) {
-        if (getServerMCVersion().getVersionID() > 2) {
+        if (getServerMCVersion().getVersionID() > 3) {
             player.sendTitle(title, subtitle, 2, 50, 2);
         } else {
             player.sendTitle(title, subtitle);
@@ -92,19 +95,18 @@ public class Utils {
     }
 
     public static String replaceMessage(JsonObject redeem_result, String message, Player p) {
-        String message_result = message
-                .replaceAll("&", "§")
-                .replaceAll("%version%", VoucherTopup.getVersion())
-                .replaceAll("%player%", p.getName());
-        if (redeem_result != null) {
+        String message_result = message;
+        try{
+            message_result = message_result.replaceAll("&", "§");
+            message_result = message_result.replaceAll("%version%", VoucherTopup.getVersion());
+            message_result = message_result.replaceAll("%player%", p.getName());
             JsonObject status = redeem_result.getAsJsonObject().get("status").getAsJsonObject();
+            message_result = message_result.replaceAll("%message%", status.get("message").getAsString());
+            message_result = message_result.replaceAll("%code%", status.get("code").getAsString());
             JsonObject voucher = redeem_result.getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();
-            message_result = message_result
-                    .replaceAll("%amount%", String.valueOf((int) voucher.get("redeemed_amount_baht").getAsDouble()))
-                    .replaceAll("%amount_double%", voucher.get("redeemed_amount_baht").getAsString())
-                    .replaceAll("%message%", status.get("message").getAsString())
-                    .replaceAll("%code%", status.get("code").getAsString());
-        }
+            message_result = message_result.replaceAll("%amount%", String.valueOf((int) voucher.get("redeemed_amount_baht").getAsDouble()));
+            message_result = message_result.replaceAll("%amount_double%", voucher.get("redeemed_amount_baht").getAsString());
+        }catch (IllegalStateException | NullPointerException ex){}
         return message_result;
     }
 }

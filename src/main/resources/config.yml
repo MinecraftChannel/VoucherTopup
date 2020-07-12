@@ -17,7 +17,7 @@ message:
     check: '&8[&bVoucherTopup&8] &eChecking, please wait...'
     help:
       - '&8[&bVoucherTopup&8] &fVoucherTopup v%version% by MCCH team.'
-      - '§8[§bVoucherTopup§8] §fUsage: /tgt <url/voucher_hash>'
+      - '&8[&bVoucherTopup&8] &fUsage: /voucher <url/voucher_hash>'
   action_bar:
     success: 'Topup success! amount: %amount%THB (%amount_double%THB)'
     fail: '&cTopup failed: %message%'
@@ -33,6 +33,8 @@ message:
     fail: '&c%message%'
     error: '&cPlease contact admin!'
     check: '&bPlease wait...'
+#Old (1.8) https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/mapping-and-modding-tutorials/2213619-1-8-all-playsound-sound-arguments
+#New (1.9 or newer) http://www.theredengineer.com/1.9-playsound-list.html
 sound:
   on_type_command:
     sound: 'entity.item.pickup'

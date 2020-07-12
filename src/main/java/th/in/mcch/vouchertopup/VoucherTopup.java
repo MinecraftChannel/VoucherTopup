@@ -45,6 +45,7 @@ public final class VoucherTopup extends JavaPlugin {
             Bukkit.getLogger().severe("Disabling " + instance.getDescription().getName());
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        Bukkit.getLogger().info("Run as version " + Utils.getServerNMSVersion() + " VersionID: " + Utils.getServerMCVersion());
     }
 
     @Override
@@ -78,7 +79,11 @@ public final class VoucherTopup extends JavaPlugin {
                         p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.success"), p));
                         Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.success"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.success"), p));
                         Utils.sendActionbar(p, Utils.replaceMessage(redeem_result, config.getString("message.action_bar.success"), p));
-                        p.playSound(p.getLocation(), config.getString("sound.on_success.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_success.volume"), (float) config.getDouble("sound.on_success.pitch"));
+                        if (Utils.getServerMCVersion().getVersionID() > 3) {
+                            p.playSound(p.getLocation(), config.getString("sound.on_success.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_success.volume"), (float) config.getDouble("sound.on_success.pitch"));
+                        }else {
+                            p.playSound(p.getLocation(),config.getString("sound.on_success.sound"),(float) config.getDouble("sound.on_success.volume"), (float) config.getDouble("sound.on_success.pitch"));
+                        }
                     } else {
                         Bukkit.getScheduler().runTask(instance, () -> {
                             Bukkit.getPluginManager().callEvent(new TopupFailedEvent(p, redeem_result));
@@ -86,7 +91,11 @@ public final class VoucherTopup extends JavaPlugin {
                         p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.fail"), p));
                         Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.fail"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.fail"), p));
                         Utils.sendActionbar(p, Utils.replaceMessage(redeem_result, config.getString("message.action_bar.fail"), p));
-                        p.playSound(p.getLocation(), config.getString("sound.on_fail.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_fail.volume"), (float) config.getDouble("sound.on_fail.pitch"));
+                        if (Utils.getServerMCVersion().getVersionID() > 3) {
+                            p.playSound(p.getLocation(), config.getString("sound.on_fail.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_fail.volume"), (float) config.getDouble("sound.on_fail.pitch"));
+                        }else {
+                            p.playSound(p.getLocation(),config.getString("sound.on_fail.sound"),(float) config.getDouble("sound.on_fail.volume"), (float) config.getDouble("sound.on_fail.pitch"));
+                        }
                     }
                 } catch (Exception ex) {
                     Bukkit.getScheduler().runTask(instance, () -> {
@@ -96,14 +105,22 @@ public final class VoucherTopup extends JavaPlugin {
                     p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.error"), p));
                     Utils.sendTitle(p, Utils.replaceMessage(null, config.getString("message.title.error"), p), Utils.replaceMessage(null, config.getString("message.sub_title.error"), p));
                     Utils.sendActionbar(p, Utils.replaceMessage(null, config.getString("message.action_bar.error"), p));
-                    p.playSound(p.getLocation(), config.getString("sound.on_error.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_error.volume"), (float) config.getDouble("sound.on_error.pitch"));
+                    if (Utils.getServerMCVersion().getVersionID() > 3) {
+                        p.playSound(p.getLocation(), config.getString("sound.on_error.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_error.volume"), (float) config.getDouble("sound.on_error.pitch"));
+                    }else {
+                        p.playSound(p.getLocation(),config.getString("sound.on_error.sound"),(float) config.getDouble("sound.on_error.volume"), (float) config.getDouble("sound.on_error.pitch"));
+                    }
                 }
             });
         } else {
             for (String s : config.getStringList("message.chat.help")) {
                 p.sendMessage(s.replaceAll("&", "§").replaceAll("%version%", version).replaceAll("%player%", p.getName()));
             }
-            p.playSound(p.getLocation(), config.getString("sound.on_type_command.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_type_command.volume"), (float) config.getDouble("sound.on_type_command.pitch"));
+            if (Utils.getServerMCVersion().getVersionID() > 3) {
+                p.playSound(p.getLocation(), config.getString("sound.on_type_command.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_type_command.volume"), (float) config.getDouble("sound.on_type_command.pitch"));
+            }else {
+                p.playSound(p.getLocation(),config.getString("sound.on_type_command.sound"),(float) config.getDouble("sound.on_type_command.volume"), (float) config.getDouble("sound.on_type_command.pitch"));
+            }
         }
 
         return super.onCommand(sender, command, label, args);
