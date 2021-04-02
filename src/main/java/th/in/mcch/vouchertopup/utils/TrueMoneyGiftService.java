@@ -10,6 +10,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,13 +19,16 @@ import java.net.URL;
 public class TrueMoneyGiftService {
 
     final public String mobileNumber;
+    final public double multiply;
     final JsonObject return_error = (JsonObject) new JsonParser().parse("{\"message\":\"Java error.\",\"code\":\"JAVA_ERROR\"}");
     //Rework form Maythiwat (Demza) source
     public String VERIFY_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/verify";
     public String REDEEM_URL = "https://gift.truemoney.com/campaign/vouchers/%hash%/redeem";
 
-    public TrueMoneyGiftService(String mobileNumber) {
+    public TrueMoneyGiftService(String mobileNumber,double multiply) {
         this.mobileNumber = mobileNumber;
+        this.multiply = multiply;
+        Bukkit.getLogger().info("TWGift Service started!");
     }
 
     public JsonPrimitive getVoucherStatus(String vocherId) {

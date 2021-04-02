@@ -37,15 +37,16 @@ public final class VoucherTopup extends JavaPlugin {
         config = this.getConfig();
         this.saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new Events(), this);
-        try {
-            Integer.parseInt(config.getString("general.phone_number"));
-            twGift = new TrueMoneyGiftService(config.getString("general.phone_number"));
-        } catch (Exception ex) {
-            Bukkit.getLogger().severe("Phone number is invalid please check in config!");
+        String phone = config.getString("general.phone_number");
+        String multiply =  config.getString("general.multiply");
+        if(phone.matches("^[0-9]*$") && phone.length() == 10 & multiply.matches("/^[0-9]+.[0-9]+$")) {
+            twGift = new TrueMoneyGiftService(phone, Double.parseDouble(multiply));
+        }else {
+            Bukkit.getLogger().severe("Phone number or multiply number is invalid please check in config!");
             Bukkit.getLogger().severe("Disabling " + instance.getDescription().getName());
             Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getLogger().info("Run as version " + Utils.getServerNMSVersion() + " VersionID: " + Utils.getServerMCVersion());
         }
-        Bukkit.getLogger().info("Run as version " + Utils.getServerNMSVersion() + " VersionID: " + Utils.getServerMCVersion());
     }
 
     @Override
@@ -62,9 +63,9 @@ public final class VoucherTopup extends JavaPlugin {
             PlayerTopupEvent event = new PlayerTopupEvent(p, args[0]);
             Bukkit.getPluginManager().callEvent(event);
             if (event.isCancelled()) return true;
-            p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.check"), p));
-            Utils.sendActionbar(p, Utils.replaceMessage(null, config.getString("message.action_bar.check"), p));
-            Utils.sendTitle(p, Utils.replaceMessage(null, config.getString("message.title.check"), p), Utils.replaceMessage(null, config.getString("message.sub_title.check"), p));
+            p.sendMessage(Utils.replaceMessage(twGift,null, config.getString("message.chat.check"), p));
+            Utils.sendActionbar(p, Utils.replaceMessage(twGift,null, config.getString("message.action_bar.check"), p));
+            Utils.sendTitle(p, Utils.replaceMessage(twGift,null, config.getString("message.title.check"), p), Utils.replaceMessage(null,null, config.getString("message.sub_title.check"), p));
             Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
                 try {
                     JsonObject redeem_result = twGift.redeem(args[0]);
@@ -72,13 +73,13 @@ public final class VoucherTopup extends JavaPlugin {
                     if (status.get("code").getAsString().equalsIgnoreCase("SUCCESS")) {
                         Bukkit.getScheduler().runTask(instance, () -> {
                             for (String s : config.getStringList("general.console_command")) {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Utils.replaceMessage(redeem_result, s, p));
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Utils.replaceMessage(twGift,redeem_result, s, p));
                             }
                             Bukkit.getPluginManager().callEvent(new TopupSuccessEvent(p, redeem_result));
                         });
-                        p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.success"), p));
-                        Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.success"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.success"), p));
-                        Utils.sendActionbar(p, Utils.replaceMessage(redeem_result, config.getString("message.action_bar.success"), p));
+                        p.sendMessage(Utils.replaceMessage(twGift,redeem_result, config.getString("message.chat.success"), p));
+                        Utils.sendTitle(p, Utils.replaceMessage(twGift,redeem_result, config.getString("message.title.success"), p), Utils.replaceMessage(twGift,redeem_result, config.getString("message.sub_title.success"), p));
+                        Utils.sendActionbar(p, Utils.replaceMessage(twGift,redeem_result, config.getString("message.action_bar.success"), p));
                         if (Utils.getServerMCVersion().getVersionID() > 3) {
                             p.playSound(p.getLocation(), config.getString("sound.on_success.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_success.volume"), (float) config.getDouble("sound.on_success.pitch"));
                         }else {
@@ -88,9 +89,9 @@ public final class VoucherTopup extends JavaPlugin {
                         Bukkit.getScheduler().runTask(instance, () -> {
                             Bukkit.getPluginManager().callEvent(new TopupFailedEvent(p, redeem_result));
                         });
-                        p.sendMessage(Utils.replaceMessage(redeem_result, config.getString("message.chat.fail"), p));
-                        Utils.sendTitle(p, Utils.replaceMessage(redeem_result, config.getString("message.title.fail"), p), Utils.replaceMessage(redeem_result, config.getString("message.sub_title.fail"), p));
-                        Utils.sendActionbar(p, Utils.replaceMessage(redeem_result, config.getString("message.action_bar.fail"), p));
+                        p.sendMessage(Utils.replaceMessage(twGift,redeem_result, config.getString("message.chat.fail"), p));
+                        Utils.sendTitle(p, Utils.replaceMessage(twGift,redeem_result, config.getString("message.title.fail"), p), Utils.replaceMessage(twGift,redeem_result, config.getString("message.sub_title.fail"), p));
+                        Utils.sendActionbar(p, Utils.replaceMessage(twGift,redeem_result, config.getString("message.action_bar.fail"), p));
                         if (Utils.getServerMCVersion().getVersionID() > 3) {
                             p.playSound(p.getLocation(), config.getString("sound.on_fail.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_fail.volume"), (float) config.getDouble("sound.on_fail.pitch"));
                         }else {
@@ -102,9 +103,9 @@ public final class VoucherTopup extends JavaPlugin {
                         Bukkit.getPluginManager().callEvent(new TopupErrorEvent(p, ex));
                     });
                     ex.printStackTrace();
-                    p.sendMessage(Utils.replaceMessage(null, config.getString("message.chat.error"), p));
-                    Utils.sendTitle(p, Utils.replaceMessage(null, config.getString("message.title.error"), p), Utils.replaceMessage(null, config.getString("message.sub_title.error"), p));
-                    Utils.sendActionbar(p, Utils.replaceMessage(null, config.getString("message.action_bar.error"), p));
+                    p.sendMessage(Utils.replaceMessage(twGift,null, config.getString("message.chat.error"), p));
+                    Utils.sendTitle(p, Utils.replaceMessage(twGift,null, config.getString("message.title.error"), p), Utils.replaceMessage(twGift,null, config.getString("message.sub_title.error"), p));
+                    Utils.sendActionbar(p, Utils.replaceMessage(twGift,null, config.getString("message.action_bar.error"), p));
                     if (Utils.getServerMCVersion().getVersionID() > 3) {
                         p.playSound(p.getLocation(), config.getString("sound.on_error.sound"), SoundCategory.PLAYERS, (float) config.getDouble("sound.on_error.volume"), (float) config.getDouble("sound.on_error.pitch"));
                     }else {
@@ -122,7 +123,6 @@ public final class VoucherTopup extends JavaPlugin {
                 p.playSound(p.getLocation(),config.getString("sound.on_type_command.sound"),(float) config.getDouble("sound.on_type_command.volume"), (float) config.getDouble("sound.on_type_command.pitch"));
             }
         }
-
         return super.onCommand(sender, command, label, args);
     }
 }
