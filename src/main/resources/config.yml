@@ -2,6 +2,7 @@
 # Varable %message%, %player%, %version%, %amount_multiply%, %amount%
 
 general:
+  skip_check: false
   phone_number: '#EnterPhoneNumberHere#'
   console_command:
     - 'say %player% topup with VoucherTopup %amount% (%amount_multiply%)'

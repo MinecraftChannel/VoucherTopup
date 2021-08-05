@@ -104,8 +104,9 @@ public class Utils {
             message_result = message_result.replaceAll("%message%", status.get("message").getAsString());
             message_result = message_result.replaceAll("%code%", status.get("code").getAsString());
             JsonObject voucher = redeem_result.getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();
-            message_result = message_result.replaceAll("%amount%", String.valueOf((int) voucher.get("redeemed_amount_baht").replaceAll(',','').getAsDouble()));
-            message_result = message_result.replaceAll("%amount_multiply%", String.valueOf(Double.parseDouble(voucher.get("redeemed_amount_baht").getAsString()) * service.multiply));
+            message_result = message_result.replaceAll("%amount%", voucher.get("redeemed_amount_baht").getAsString().replaceAll(",",""));
+            message_result = message_result.replaceAll("%amount_double%", voucher.get("redeemed_amount_baht").getAsString());
+            message_result = message_result.replaceAll("%amount_multiply%", String.valueOf(Double.parseDouble(voucher.get("redeemed_amount_baht").getAsString().replaceAll(",","")) * service.multiply));
         }catch (IllegalStateException | NullPointerException ex){}
         return message_result;
     }

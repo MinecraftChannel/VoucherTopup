@@ -38,11 +38,18 @@ public final class VoucherTopup extends JavaPlugin {
         this.saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new Events(), this);
         String phone = config.getString("general.phone_number");
+        Boolean skipCheck = config.getBoolean("general.skip_check");
         String multiply =  config.getString("general.multiply");
-        if(phone.matches("^[0-9]*$") && phone.length() == 10 & multiply.matches("/^[0-9]+.[0-9]+$")) {
+        Bukkit.getLogger().info("Skip check: " + skipCheck);
+        if (skipCheck) {
+            Bukkit.getLogger().warning("Warning: Skip check is enabled if config is invalid VoucherTopup will ignored");
+        }
+        if(skipCheck || phone.matches("^[0-9]*$") && phone.length() == 10 & multiply.matches("/^[0-9]+.[0-9]+$")) {
             twGift = new TrueMoneyGiftService(phone, Double.parseDouble(multiply));
         }else {
             Bukkit.getLogger().severe("Phone number or multiply number is invalid please check in config!");
+            Bukkit.getLogger().info("Current phone value: " + phone);
+            Bukkit.getLogger().info("Current multiply value: " + multiply);
             Bukkit.getLogger().severe("Disabling " + instance.getDescription().getName());
             Bukkit.getPluginManager().disablePlugin(this);
             Bukkit.getLogger().info("Run as version " + Utils.getServerNMSVersion() + " VersionID: " + Utils.getServerMCVersion());
