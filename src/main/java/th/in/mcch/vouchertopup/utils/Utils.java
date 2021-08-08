@@ -7,8 +7,14 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utils {
     public static String getServerNMSVersion() {
@@ -46,6 +52,9 @@ public class Utils {
         }
         if (version.contains("1_16")) {
             gameVersion = GameVersion.MC_1_16;
+        }
+        if (version.contains("1_17")) {
+            gameVersion = GameVersion.MC_1_17;
         }
         return gameVersion;
     }
@@ -94,9 +103,9 @@ public class Utils {
         }
     }
 
-    public static String replaceMessage(TrueMoneyGiftService service,JsonObject redeem_result, String message, Player p) {
+    public static String replaceMessage(TrueMoneyGiftService service, JsonObject redeem_result, String message, Player p) {
         String message_result = message;
-        try{
+        try {
             message_result = message_result.replaceAll("&", "§");
             message_result = message_result.replaceAll("%version%", VoucherTopup.getVersion());
             message_result = message_result.replaceAll("%player%", p.getName());
@@ -104,10 +113,46 @@ public class Utils {
             message_result = message_result.replaceAll("%message%", status.get("message").getAsString());
             message_result = message_result.replaceAll("%code%", status.get("code").getAsString());
             JsonObject voucher = redeem_result.getAsJsonObject().get("data").getAsJsonObject().get("voucher").getAsJsonObject();
-            message_result = message_result.replaceAll("%amount%", voucher.get("redeemed_amount_baht").getAsString().replaceAll(",",""));
+            message_result = message_result.replaceAll("%amount%", voucher.get("redeemed_amount_baht").getAsString().replaceAll(",", ""));
             message_result = message_result.replaceAll("%amount_double%", voucher.get("redeemed_amount_baht").getAsString());
-            message_result = message_result.replaceAll("%amount_multiply%", String.valueOf(Double.parseDouble(voucher.get("redeemed_amount_baht").getAsString().replaceAll(",","")) * service.multiply));
-        }catch (IllegalStateException | NullPointerException ex){}
-        return message_result;
+            message_result = message_result.replaceAll("%amount_multiply%", String.valueOf(Double.parseDouble(voucher.get("redeemed_amount_baht").getAsString().replaceAll(",", "")) * service.multiply));
+        } catch (IllegalStateException | NullPointerException ex) {
+        }
+        return message_result.replaceAll("%(\\S*)%","-");
+    }
+
+    // Log into the debug file
+    public static void logTopup(String string) {
+            try {
+                File file = loadLogFile();
+                if (file != null) {
+                    PrintWriter writer = new PrintWriter(new FileWriter(file, true), true);
+                    if (string.equals("")) {
+                        writer.write(System.getProperty("line.separator"));
+                    } else {
+                        Date dt = new Date();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String time = df.format(dt);
+                        writer.write(time + " " + string);
+                        writer.write(System.getProperty("line.separator"));
+                    }
+                    writer.close();
+                }
+            } catch (IOException e) {
+                Bukkit.getServer().getLogger().warning("[VoucherTopup] An error occurred while writing to the log! IOException");
+            }
+    }
+
+    // Check if debug is enabled and if a file needs to be created
+    private static File loadLogFile() {
+        File file = new File(Bukkit.getServer().getPluginManager().getPlugin("VoucherTopup").getDataFolder(), "topup.log");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                Bukkit.getServer().getLogger().severe("[VoucherTopup] Failed to create the topup.log! IOException");
+            }
+        }
+        return file;
     }
 }

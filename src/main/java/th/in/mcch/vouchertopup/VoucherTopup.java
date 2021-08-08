@@ -44,7 +44,7 @@ public final class VoucherTopup extends JavaPlugin {
         if (skipCheck) {
             Bukkit.getLogger().warning("Warning: Skip check is enabled if config is invalid VoucherTopup will ignored");
         }
-        if(skipCheck || phone.matches("^[0-9]*$") && phone.length() == 10 & multiply.matches("/^[0-9]+.[0-9]+$")) {
+        if(skipCheck || phone.matches("^[0-9]*$") && phone.length() == 10 & multiply.matches("^[0-9]+.[0-9]+$")) {
             twGift = new TrueMoneyGiftService(phone, Double.parseDouble(multiply));
         }else {
             Bukkit.getLogger().severe("Phone number or multiply number is invalid please check in config!");
@@ -55,7 +55,6 @@ public final class VoucherTopup extends JavaPlugin {
             Bukkit.getLogger().info("Run as version " + Utils.getServerNMSVersion() + " VersionID: " + Utils.getServerMCVersion());
         }
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -92,6 +91,7 @@ public final class VoucherTopup extends JavaPlugin {
                         }else {
                             p.playSound(p.getLocation(),config.getString("sound.on_success.sound"),(float) config.getDouble("sound.on_success.volume"), (float) config.getDouble("sound.on_success.pitch"));
                         }
+                        Utils.logTopup("[SUCCESS] " + Utils.replaceMessage(twGift,redeem_result," Version: %version% Player: %player% Message: %message% Code: %code% Amount: %amount% AmountDouble %amount_double% AmountMultiply: %amount_multiply%",p));
                     } else {
                         Bukkit.getScheduler().runTask(instance, () -> {
                             Bukkit.getPluginManager().callEvent(new TopupFailedEvent(p, redeem_result));
@@ -104,6 +104,7 @@ public final class VoucherTopup extends JavaPlugin {
                         }else {
                             p.playSound(p.getLocation(),config.getString("sound.on_fail.sound"),(float) config.getDouble("sound.on_fail.volume"), (float) config.getDouble("sound.on_fail.pitch"));
                         }
+                        Utils.logTopup("[FAILED] " + Utils.replaceMessage(twGift,redeem_result," Version: %version% Player: %player% Message: %message% Code: %code% Amount: %amount% AmountDouble %amount_double% AmountMultiply: %amount_multiply%",p));
                     }
                 } catch (Exception ex) {
                     Bukkit.getScheduler().runTask(instance, () -> {
@@ -118,6 +119,7 @@ public final class VoucherTopup extends JavaPlugin {
                     }else {
                         p.playSound(p.getLocation(),config.getString("sound.on_error.sound"),(float) config.getDouble("sound.on_error.volume"), (float) config.getDouble("sound.on_error.pitch"));
                     }
+                    Utils.logTopup("[ERROR] Version: " + getVersion() + " Player: " + p.getName() + " Message: " + ex.getMessage());
                 }
             });
         } else {
